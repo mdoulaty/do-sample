@@ -4,7 +4,7 @@
 
 # -- Stage 1 -- #
 # Compile the app.
-FROM mcr.microsoft.com/dotnet/sdk as builder
+FROM mcr.microsoft.com/dotnet/sdk:8.0 as builder
 WORKDIR /app
 # The build context is set to the directory where the repo is cloned.
 # This will copy all files in the repo to /app inside the container.
@@ -16,7 +16,7 @@ RUN dotnet publish HelloWorld
 
 # -- Stage 2 -- #
 # Create the final environment with the compiled binary.
-FROM mcr.microsoft.com/dotnet/sdk
+FROM mcr.microsoft.com/dotnet/sdk:8.0
 WORKDIR /root/
 # Copy the binary from the builder stage and set it as the default command.
 COPY --from=builder /app/HelloWorld/bin/Release/net8.0/publish/ /app
