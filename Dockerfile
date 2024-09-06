@@ -1,6 +1,6 @@
-# This is a standard Dockerfile for building a Go app.
-# It is a multi-stage build: the first stage compiles the Go source into a binary, and
-#   the second stage copies only the binary into an alpine base.
+# This is a standard Dockerfile for building a .net core app.
+# It is a multi-stage build: the first stage compiles the source into a binary, and
+# the second stage copies only the published package into a dotnet runtime image.
 
 # -- Stage 1 -- #
 # Compile the app.
@@ -15,9 +15,9 @@ COPY . .
 RUN dotnet publish HelloWorld
 
 # -- Stage 2 -- #
-# Create the final environment with the compiled binary.
+# Create the final environment with the compiled package.
 FROM mcr.microsoft.com/dotnet/sdk:8.0
 WORKDIR /root/
-# Copy the binary from the builder stage and set it as the default command.
+# Copy the published package from the builder stage and set it as the default command.
 COPY --from=builder /app/HelloWorld/bin/Release/net8.0/publish/ /app
 CMD ["/app/HelloWorld"]
